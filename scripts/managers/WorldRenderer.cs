@@ -55,13 +55,19 @@ namespace world_generation.scripts.managers
             WorldManager wm = WorldManager.Instance;
             WorldSettings ws = wm.worldSettings;
 
-            //Create chunk node
+            //Godot has position in middle of sprite, so we need to offset it
+            Vector2 anchorOffset = new Vector2(ws.tileSize / 2, -ws.tileSize / 2);
+            Vector2 centerOffset = new Vector2(
+                -ws.worldWidth * ws.chunkSize * ws.tileSize / 2,
+                ws.worldHeight * ws.chunkSize * ws.tileSize / 2
+            );
+            Vector2 position = new Vector2(
+                chunk.coordinate.X * ws.chunkSize * ws.tileSize,
+                -chunk.coordinate.Y * ws.chunkSize * ws.tileSize
+            );
             Node2D chunkNode = new Node2D();
             chunkNode.Name = "chunk " + chunk.coordinate.X + ", " + chunk.coordinate.Y;
-            chunkNode.Position = new Vector2(
-                chunk.coordinate.X * ws.chunkSize * ws.tileSize,
-                chunk.coordinate.Y * ws.chunkSize * ws.tileSize
-            );
+            chunkNode.Position = position + anchorOffset + centerOffset;
 
             if (chunkRoot != null)
             {
@@ -81,7 +87,7 @@ namespace world_generation.scripts.managers
                     tileNode.Name = "tile " + tile.coordinate.X + ", " + tile.coordinate.Y;
                     tileNode.Position = new Vector2(
                         tile.coordinate.X % ws.chunkSize * ws.tileSize,
-                        tile.coordinate.Y % ws.chunkSize * ws.tileSize
+                        -tile.coordinate.Y % ws.chunkSize * ws.tileSize
                     );
 
                     chunkNode.AddChild(tileNode);

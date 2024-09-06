@@ -9,6 +9,7 @@
 [node name="chunks_root" type="Node2D" parent="."]
 
 [node name="testChunk" type="Sprite2D" parent="chunks_root"]
+modulate = Color(1, 0, 1, 1)
 texture = ExtResource("1_ferls")
 
 [node name="managers" type="Node2D" parent="."]
@@ -18,6 +19,7 @@ script = ExtResource("2_58xa3")
 chunkRoot = NodePath("../../chunks_root")
 
 [node name="world_manager" type="Node2D" parent="managers"]
+rotation = -2.79078
 script = ExtResource("3_wk7eo")
 
 [node name="Camera2D" type="Camera2D" parent="."]
