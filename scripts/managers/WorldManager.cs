@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
@@ -65,6 +66,22 @@ namespace world_generation.scripts.managers
             {
                 wr.RenderChunk(chunk);
             }
+            Viewer viewer = new Viewer();
+            viewer.Name = "Main Viewer";
+            viewer.Texture = GD.Load<Texture2D>("res://assets/white_16x16.png");
+            viewer.Modulate = new Color(1, 0, 0);
+            GetViewport().GetCamera2D().AddChild(viewer);
         }
+
+        public override void _Process(double delta)
+        {
+            base._Process(delta);
+            // Chunk[] chunksToRender = GetChunksToRender();
+        }
+
+        // private Chunk [] GetChunksToRender(Vector2I coord){
+        //    Chunk[] chunksToRender = new Chunk[1 + worldSettings];
+
+        // }
     }
 }

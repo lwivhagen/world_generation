@@ -36,7 +36,6 @@ namespace world_generation.scripts.other
             Vector2 input = new Vector2();
             if (Input.IsActionPressed("ui_right"))
             {
-                GD.Print("Right");
                 input.X += 1;
             }
             if (Input.IsActionPressed("ui_left"))

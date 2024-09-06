@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://c4gd01e5fp661"]
+[gd_scene load_steps=6 format=3 uid="uid://c4gd01e5fp661"]
 
 [ext_resource type="Texture2D" uid="uid://8iwy6n05nucx" path="res://assets/white_16x16.png" id="1_ferls"]
 [ext_resource type="Script" path="res://scripts/managers/WorldRenderer.cs" id="2_58xa3"]
 [ext_resource type="Script" path="res://scripts/managers/WorldManager.cs" id="3_wk7eo"]
+[ext_resource type="Script" path="res://scripts/other/CameraController.cs" id="4_vfg28"]
+[ext_resource type="Script" path="res://scripts/managers/UIManager.cs" id="5_aqnut"]
 
 [node name="root" type="Node2D"]
 
@@ -23,3 +25,19 @@ rotation = -2.79078
 script = ExtResource("3_wk7eo")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("4_vfg28")
+MoveSpeed = 100.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("fpsCounter")]
+script = ExtResource("5_aqnut")
+fpsCounter = NodePath("FPS Counter")
+
+[node name="FPS Counter" type="Label" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "FPS:	"
+
+[node name="FPS Counter2" type="Label" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "FPS:	"

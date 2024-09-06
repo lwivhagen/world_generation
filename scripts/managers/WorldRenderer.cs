@@ -96,6 +96,20 @@ namespace world_generation.scripts.managers
             return chunkNode;
         }
 
+        public Node2D GetChunkNode(Vector2I coord)
+        {
+            if (chunkNodes.ContainsKey(coord))
+            {
+                GD.Print("Chunk: " + chunkNodes[coord].Name);
+                return chunkNodes[coord];
+            }
+            else
+            {
+                GD.Print("Chunk not found");
+                return null;
+            }
+        }
+
         public void RenderChunk(Chunk chunk)
         {
             Node2D chunkNode;
