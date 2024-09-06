@@ -1,3 +1,23 @@
-[gd_scene format=3 uid="uid://c4gd01e5fp661"]
+[gd_scene load_steps=4 format=3 uid="uid://c4gd01e5fp661"]
 
-[node name="Node2D" type="Node2D"]
+[ext_resource type="Texture2D" uid="uid://8iwy6n05nucx" path="res://assets/white_16x16.png" id="1_ferls"]
+[ext_resource type="Script" path="res://scripts/managers/WorldRenderer.cs" id="2_58xa3"]
+[ext_resource type="Script" path="res://scripts/managers/WorldManager.cs" id="3_wk7eo"]
+
+[node name="root" type="Node2D"]
+
+[node name="chunks_root" type="Node2D" parent="."]
+
+[node name="testChunk" type="Sprite2D" parent="chunks_root"]
+texture = ExtResource("1_ferls")
+
+[node name="managers" type="Node2D" parent="."]
+
+[node name="world_renderer" type="Node2D" parent="managers" node_paths=PackedStringArray("chunkRoot")]
+script = ExtResource("2_58xa3")
+chunkRoot = NodePath("../../chunks_root")
+
+[node name="world_manager" type="Node2D" parent="managers"]
+script = ExtResource("3_wk7eo")
+
+[node name="Camera2D" type="Camera2D" parent="."]
