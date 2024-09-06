@@ -105,7 +105,9 @@ namespace world_generation.scripts.managers
             {
                 for (int x = 0; x < chunk.tiles[y].Length; x++)
                 {
-                    chunkNode.GetChild<Sprite2D>(0).Texture = textures[chunk.tiles[y][x].id];
+                    chunkNode.GetChild<Sprite2D>(y * chunk.tiles.Length + x).Texture = textures[
+                        chunk.tiles[y][x].id
+                    ];
                 }
             }
         }
