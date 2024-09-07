@@ -44,7 +44,8 @@ namespace world_generation.scripts.managers
         public WorldSettings worldSettings { get; private set; }
         public Random random { get; private set; }
 
-        private Dictionary<Vector2I, Chunk> chunks = new Dictionary<Vector2I, Chunk>();
+        public Dictionary<Vector2I, Chunk> chunks { get; private set; } =
+            new Dictionary<Vector2I, Chunk>();
 
         public override void _Ready()
         {
@@ -62,10 +63,10 @@ namespace world_generation.scripts.managers
                 .ToDictionary(c => c.coordinate, c => c);
             GD.Print("chunks: " + chunks.Count);
             WorldRenderer wr = WorldRenderer.Instance;
-            foreach (Chunk chunk in chunks.Values)
-            {
-                wr.RenderChunk(chunk);
-            }
+            // foreach (Chunk chunk in chunks.Values)
+            // {
+            //     wr.RenderChunk(chunk);
+            // }
             Viewer viewer = new Viewer();
             viewer.Name = "Main Viewer";
             viewer.Texture = GD.Load<Texture2D>("res://assets/white_16x16.png");

@@ -69,11 +69,11 @@ namespace world_generation.scripts.other
         private void QueueChunks()
         {
             List<Vector2I> inNewView = new List<Vector2I>();
-            for (int x = -worldSettings.generateDistance; x <= worldSettings.generateDistance; x++)
+            for (int x = -worldSettings.renderDistance.X; x <= worldSettings.renderDistance.X; x++)
             {
                 for (
-                    int y = -worldSettings.generateDistance;
-                    y <= worldSettings.generateDistance;
+                    int y = -worldSettings.renderDistance.Y;
+                    y <= worldSettings.renderDistance.Y;
                     y++
                 )
                 {
@@ -94,6 +94,7 @@ namespace world_generation.scripts.other
         {
             foreach (Vector2I chunkCoord in chunksToRender)
             {
+                WorldRenderer.Instance.RenderChunk(worldManager.chunks[chunkCoord]);
                 WorldRenderer.Instance.ModulateChunk(chunkCoord, new Color(1, 0, 0));
             }
             foreach (Vector2I chunkCoord in chunksToUnRender)

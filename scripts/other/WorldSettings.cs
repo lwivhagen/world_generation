@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace world_generation.scripts.other
@@ -21,6 +22,6 @@ namespace world_generation.scripts.other
         public int worldHeight = 16;
 
         //Amount of chunks to generate in each direction from the player
-        public int generateDistance = 1;
+        public Godot.Vector2I renderDistance = new Godot.Vector2I(2, 1);
     }
 }
