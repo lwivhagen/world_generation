@@ -23,6 +23,7 @@ namespace world_generation.scripts.other
         private Vector2I chunkCoordinate;
         private Vector2I lastChunkCoordinate;
 
+        private List<Vector2I> chunksInView = new List<Vector2I>();
         private List<Vector2I> chunksToRender = new List<Vector2I>();
         private List<Vector2I> chunksToUnRender = new List<Vector2I>();
 
@@ -40,8 +41,12 @@ namespace world_generation.scripts.other
         public override void _Process(double delta)
         {
             CalculatePositions();
-            QueueChunks();
-            RenderQueue();
+            if (lastChunkCoordinate != chunkCoordinate)
+            {
+                QueueChunks();
+                RenderQueue();
+            }
+            lastChunkCoordinate = chunkCoordinate;
         }
 
         private void CalculatePositions()
@@ -63,12 +68,7 @@ namespace world_generation.scripts.other
 
         private void QueueChunks()
         {
-            if (lastChunkCoordinate == chunkCoordinate)
-            {
-                return;
-            }
-
-            List<Vector2I> chunksNewFrame = new List<Vector2I>();
+            List<Vector2I> inNewView = new List<Vector2I>();
             for (int x = -worldSettings.generateDistance; x <= worldSettings.generateDistance; x++)
             {
                 for (
@@ -81,34 +81,34 @@ namespace world_generation.scripts.other
                         chunkCoordinate.X + x,
                         chunkCoordinate.Y + y
                     );
-                    chunksNewFrame.Add(chunkCoord);
+                    inNewView.Add(chunkCoord);
                 }
             }
-            List<Vector2I> chunksLastFrame = new List<Vector2I>(chunksToRender);
-            chunksToRender = chunksNewFrame.Except(chunksLastFrame).ToList();
-            chunksToUnRender = chunksLastFrame.Except(chunksNewFrame).ToList();
+            List<Vector2I> inViewLastFrame = new List<Vector2I>(chunksInView);
+            chunksToRender = inNewView.Except(inViewLastFrame).ToList();
+            chunksToUnRender = inViewLastFrame.Except(inNewView).ToList();
+            chunksInView = inNewView;
         }
 
         private void RenderQueue()
         {
             foreach (Vector2I chunkCoord in chunksToRender)
             {
-                WorldRenderer.Instance.ModulateChunk(chunkCoord, new Color(1, 0.5f, 0.5f));
+                WorldRenderer.Instance.ModulateChunk(chunkCoord, new Color(1, 0, 0));
             }
             foreach (Vector2I chunkCoord in chunksToUnRender)
             {
                 WorldRenderer.Instance.ModulateChunk(chunkCoord, new Color(1, 1, 1));
             }
 
-            WorldRenderer.Instance.ModulateChunk(chunkCoordinate, new Color(0.5f, 1, 0.5f));
-            if (
-                lastChunkCoordinate != chunkCoordinate
-                && !chunksToRender.Contains(lastChunkCoordinate)
-            )
-            {
-                WorldRenderer.Instance.ModulateChunk(lastChunkCoordinate, new Color(1, 1, 1));
-            }
-            lastChunkCoordinate = chunkCoordinate;
+            // WorldRenderer.Instance.ModulateChunk(chunkCoordinate, new Color(0.5f, 1, 0.5f));
+            // if (
+            //     lastChunkCoordinate != chunkCoordinate
+            //     && !chunksToRender.Contains(lastChunkCoordinate)
+            // )
+            // {
+            //     WorldRenderer.Instance.ModulateChunk(lastChunkCoordinate, new Color(1, 1, 1));
+            // }
         }
     }
 }
