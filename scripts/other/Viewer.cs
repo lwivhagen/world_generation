@@ -31,10 +31,13 @@ namespace world_generation.scripts.other
 
         public override void _Process(double delta)
         {
-            float chunkSizeInUnits = worldSettings.chunkSize * worldSettings.tileSize;
+            Vector2 offset = new Vector2(
+                worldSettings.worldWidth * worldSettings.chunkSize * worldSettings.tileSize / 2,
+                worldSettings.worldHeight * worldSettings.chunkSize * worldSettings.tileSize / 2
+            );
             coordinate = new Vector2I(
-                (int)(GlobalPosition.X % chunkSizeInUnits),
-                (int)(GlobalPosition.Y % chunkSizeInUnits)
+                (int)(((GlobalPosition.X + offset.X) / worldSettings.tileSize)),
+                (int)(((-GlobalPosition.Y + offset.Y) / worldSettings.tileSize))
             );
         }
 
