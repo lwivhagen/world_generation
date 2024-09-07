@@ -110,10 +110,19 @@ namespace world_generation.scripts.managers
             }
         }
 
+        public void ModulateChunk(Vector2I coord, Color color)
+        {
+            if (chunkNodes.ContainsKey(coord))
+            {
+                chunkNodes[coord].Modulate = color;
+            }
+        }
+
         public void RenderChunk(Chunk chunk)
         {
             Node2D chunkNode;
             //Add chunkNode if missing
+            //TODO: Object pooling
             if (!chunkNodes.ContainsKey(chunk.coordinate))
             {
                 chunkNodes.Add(chunk.coordinate, CreateChunkNode(chunk));
