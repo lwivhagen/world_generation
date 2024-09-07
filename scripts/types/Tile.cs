@@ -8,6 +8,7 @@ namespace world_generation.scripts.types
         //X, Y
         public Vector2I coordinate;
         public byte id = 0;
+        public float testNoise = 0.0f;
 
         public Tile(Vector2I position, byte id = 0)
         {

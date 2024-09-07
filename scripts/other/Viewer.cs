@@ -95,7 +95,7 @@ namespace world_generation.scripts.other
             foreach (Vector2I chunkCoord in chunksToRender)
             {
                 WorldRenderer.Instance.RenderChunk(worldManager.chunks[chunkCoord]);
-                WorldRenderer.Instance.ModulateChunk(chunkCoord, new Color(1, 0, 0));
+                // WorldRenderer.Instance.ModulateChunk(chunkCoord, new Color(1, 0, 0));
             }
             foreach (Vector2I chunkCoord in chunksToUnRender)
             {

@@ -21,7 +21,10 @@ namespace world_generation.scripts.other
         public int worldWidth = 16;
         public int worldHeight = 16;
 
+        //mountainHeight is the maximum height of the mountains in tiles from 00
+        public int mountainHeight = 15;
+
         //Amount of chunks to generate in each direction from the player
-        public Godot.Vector2I renderDistance = new Godot.Vector2I(2, 1);
+        public Godot.Vector2I renderDistance = new Godot.Vector2I(3, 2);
     }
 }

@@ -74,6 +74,7 @@ namespace world_generation.scripts.managers
             Node2D chunkNode = chunkNodePool[0];
             chunkNodePool.RemoveAt(0);
             chunkNode.Visible = true;
+            chunkNode.Name = "chunk " + chunk.coordinate.X + ", " + chunk.coordinate.Y;
             chunkNode.Position = ChunkCoordinateToGlobalPosition(chunk.coordinate);
             chunkNodes.Add(chunk.coordinate, chunkNode);
             return chunkNode;
@@ -160,27 +161,22 @@ namespace world_generation.scripts.managers
         {
             Node2D chunkNode = AquireChunkNode(chunk);
 
-            // if (!chunkNodes.ContainsKey(chunk.coordinate) )
-            // {
-            //     if(chunkNodePool.Count > 0)
-            //     {
-            //         ReviveChunkNode(chunk);
-            //     }
-            //     else
-            //     {
-            //     chunkNodes.Add(chunk.coordinate, CreateChunkNode(chunk));
-            //     }
-            // }
-            // chunkNode = chunkNodes[chunk.coordinate];
-
             //Update textures
             for (int y = 0; y < chunk.tiles.Length; y++)
             {
                 for (int x = 0; x < chunk.tiles[y].Length; x++)
                 {
-                    chunkNode.GetChild<Sprite2D>(y * chunk.tiles.Length + x).Texture = textures[
-                        chunk.tiles[y][x].id
-                    ];
+                    Sprite2D tileNode = chunkNode.GetChild<Sprite2D>(y * chunk.tiles.Length + x);
+
+                    tileNode.Texture = textures[chunk.tiles[y][x].id];
+                    if (chunk.tiles[y][x].id == 0)
+                    {
+                        tileNode.Modulate = new Color(0, 0, 0);
+                    }
+                    else
+                    {
+                        tileNode.Modulate = new Color(1, 1, 1);
+                    }
                 }
             }
         }
