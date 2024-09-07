@@ -72,16 +72,5 @@ namespace world_generation.scripts.managers
             viewer.Modulate = new Color(1, 0, 0);
             GetViewport().GetCamera2D().AddChild(viewer);
         }
-
-        public override void _Process(double delta)
-        {
-            base._Process(delta);
-            // Chunk[] chunksToRender = GetChunksToRender();
-        }
-
-        // private Chunk [] GetChunksToRender(Vector2I coord){
-        //    Chunk[] chunksToRender = new Chunk[1 + worldSettings];
-
-        // }
     }
 }

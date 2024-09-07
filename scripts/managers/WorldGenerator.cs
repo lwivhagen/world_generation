@@ -25,7 +25,7 @@ namespace world_generation.scripts.managers
 
         public static Chunk GenerateChunk(Vector2I coordinate)
         {
-            Console.WriteLine("Generating Chunk");
+            // Console.WriteLine("Generating Chunk");
             Chunk chunk = new Chunk(coordinate);
             WorldManager wm = WorldManager.Instance;
             WorldSettings ws = wm.worldSettings;
@@ -40,7 +40,7 @@ namespace world_generation.scripts.managers
                 }
             }
             chunk.tiles = tiles;
-            GD.Print("Chunk: " + chunk.tiles[0].Length);
+            // GD.Print("Chunk: " + chunk.tiles[0].Length);
             return chunk;
         }
     }

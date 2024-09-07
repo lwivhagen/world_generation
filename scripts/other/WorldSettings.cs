@@ -17,8 +17,8 @@ namespace world_generation.scripts.other
         public int regionSize = 32;
 
         //worldSize is the size of the world in chunks (for now)
-        public int worldWidth = 20;
-        public int worldHeight = 20;
+        public int worldWidth = 16;
+        public int worldHeight = 16;
 
         //Amount of chunks to generate in each direction from the player
         public int generateDistance = 1;
