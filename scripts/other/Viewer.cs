@@ -100,6 +100,7 @@ namespace world_generation.scripts.other
             foreach (Vector2I chunkCoord in chunksToUnRender)
             {
                 WorldRenderer.Instance.ModulateChunk(chunkCoord, new Color(1, 1, 1));
+                WorldRenderer.Instance.UnRenderChunk(chunkCoord);
             }
 
             // WorldRenderer.Instance.ModulateChunk(chunkCoordinate, new Color(0.5f, 1, 0.5f));

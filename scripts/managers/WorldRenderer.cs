@@ -26,6 +26,7 @@ namespace world_generation.scripts.managers
         }
         #endregion
         private Dictionary<Vector2I, Node2D> chunkNodes = new Dictionary<Vector2I, Node2D>();
+        private List<Node2D> chunkNodePool = new List<Node2D>();
 
         [Export] // Assigned in inspector
         private Node2D chunkRoot = null;
@@ -43,11 +44,46 @@ namespace world_generation.scripts.managers
 
         public void UnRenderChunk(Vector2I coord)
         {
-            if (chunkNodes.ContainsKey(coord))
+            if (!chunkNodes.ContainsKey(coord))
             {
-                chunkNodes[coord].QueueFree();
-                chunkNodes.Remove(coord);
+                GD.PrintErr("UnRender failed, Chunk not found");
+                return;
             }
+            RecycleChunkNode(coord, chunkNodes[coord]);
+        }
+
+        private Node2D AquireChunkNode(Chunk chunk)
+        {
+            if (chunkNodes.ContainsKey(chunk.coordinate))
+            {
+                return chunkNodes[chunk.coordinate];
+            }
+            else if (chunkNodePool.Count > 0)
+            {
+                return ReviveChunkNode(chunk);
+            }
+            else
+            {
+                chunkNodes.Add(chunk.coordinate, CreateChunkNode(chunk));
+                return chunkNodes[chunk.coordinate];
+            }
+        }
+
+        private Node2D ReviveChunkNode(Chunk chunk)
+        {
+            Node2D chunkNode = chunkNodePool[0];
+            chunkNodePool.RemoveAt(0);
+            chunkNode.Visible = true;
+            chunkNode.Position = ChunkCoordinateToGlobalPosition(chunk.coordinate);
+            chunkNodes.Add(chunk.coordinate, chunkNode);
+            return chunkNode;
+        }
+
+        private void RecycleChunkNode(Vector2I coord, Node2D chunkNode)
+        {
+            chunkNode.Visible = false;
+            chunkNodes.Remove(coord);
+            chunkNodePool.Add(chunkNode);
         }
 
         private Node2D CreateChunkNode(Chunk chunk)
@@ -96,18 +132,20 @@ namespace world_generation.scripts.managers
             return chunkNode;
         }
 
-        public Node2D GetChunkNode(Vector2I coord)
+        private Vector2 ChunkCoordinateToGlobalPosition(Vector2I coord)
         {
-            if (chunkNodes.ContainsKey(coord))
-            {
-                GD.Print("Chunk: " + chunkNodes[coord].Name);
-                return chunkNodes[coord];
-            }
-            else
-            {
-                GD.Print("Chunk not found");
-                return null;
-            }
+            WorldManager wm = WorldManager.Instance;
+            WorldSettings ws = wm.worldSettings;
+            Vector2 anchorOffset = new Vector2(ws.tileSize / 2, -ws.tileSize / 2);
+            Vector2 centerOffset = new Vector2(
+                -ws.worldWidth * ws.chunkSize * ws.tileSize / 2,
+                ws.worldHeight * ws.chunkSize * ws.tileSize / 2
+            );
+            Vector2 position = new Vector2(
+                coord.X * ws.chunkSize * ws.tileSize,
+                -coord.Y * ws.chunkSize * ws.tileSize
+            );
+            return position + anchorOffset + centerOffset;
         }
 
         public void ModulateChunk(Vector2I coord, Color color)
@@ -120,14 +158,20 @@ namespace world_generation.scripts.managers
 
         public void RenderChunk(Chunk chunk)
         {
-            Node2D chunkNode;
-            //Add chunkNode if missing
-            //TODO: Object pooling
-            if (!chunkNodes.ContainsKey(chunk.coordinate))
-            {
-                chunkNodes.Add(chunk.coordinate, CreateChunkNode(chunk));
-            }
-            chunkNode = chunkNodes[chunk.coordinate];
+            Node2D chunkNode = AquireChunkNode(chunk);
+
+            // if (!chunkNodes.ContainsKey(chunk.coordinate) )
+            // {
+            //     if(chunkNodePool.Count > 0)
+            //     {
+            //         ReviveChunkNode(chunk);
+            //     }
+            //     else
+            //     {
+            //     chunkNodes.Add(chunk.coordinate, CreateChunkNode(chunk));
+            //     }
+            // }
+            // chunkNode = chunkNodes[chunk.coordinate];
 
             //Update textures
             for (int y = 0; y < chunk.tiles.Length; y++)
